@@ -13,7 +13,16 @@
             <option value = "{{ i }}">{{ i }}</option>
             {% endfor %}
     </select>
+
+    Date<input type="checkbox" name="check" value='date'>
+    Open<input type="checkbox" name="check" value="open">
+    High<input type="checkbox" name="check" value="high">
+    Low<input type="checkbox" name="check" value="low">
+    Close<input type="checkbox" name="check" value="close">
+    Volume<input type="checkbox" name="check" value="volume">
+
     <input type="submit" value='confirm' />
+    
 </form>
 
 <p>{{ stock }}</p>
