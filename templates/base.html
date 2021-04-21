@@ -1,0 +1,23 @@
+<html>
+
+
+<head>
+    <title>{{ title }}</title>
+</head>
+
+
+<body>
+<form method="POST" action='{{url_for('stock')}}'>
+    <select name="stockname"> 
+            {% for i in stocklist %}
+            <option value = "{{ i }}">{{ i }}</option>
+            {% endfor %}
+    </select>
+    <input type="submit" value='confirm' />
+</form>
+
+<p>{{ stock }}</p>
+</body>
+
+
+</html>
