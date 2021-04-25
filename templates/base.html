@@ -7,6 +7,21 @@
 
 
 <body>
+
+<form method="POST" action="{{url_for('update')}}">
+    <p>Because of the API limit, only one stock can be updated at a time</p>
+    <p>Sorry for the inconvenience</p>
+    
+    <select name="_list"> 
+        {% for i in _list %}
+        <option value = "{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value='Update Stock Data' />
+
+
+</form>
+
 <form method="POST" action='{{url_for('stock')}}'>
     <select name="stockname"> 
             {% for i in stocklist %}
@@ -14,6 +29,7 @@
             {% endfor %}
     </select>
 
+    <br>
     Date<input type="checkbox" name="check" value='date'>
     Open<input type="checkbox" name="check" value="open">
     High<input type="checkbox" name="check" value="high">
@@ -21,11 +37,34 @@
     Close<input type="checkbox" name="check" value="close">
     Volume<input type="checkbox" name="check" value="volume">
 
+    <br>
     <input type="submit" value='confirm' />
-    
 </form>
 
+<br><br><br>
+
+<form method="POST" action='{{url_for('index')}}'>
+    <select name="indexname"> 
+            {% for i in indexlist %}
+            <option value = "{{ i }}">{{ i }}</option>
+            {% endfor %}
+    </select>
+
+    <br>
+    Date<input type="checkbox" name="check2" value='date'>
+    Open<input type="checkbox" name="check2" value="open">
+    High<input type="checkbox" name="check2" value="high">
+    Low<input type="checkbox" name="check2" value="low">
+    Close<input type="checkbox" name="check2" value="close">
+
+    <br>
+    <input type="submit" value='confirm' />
+</form>
+
+
+
 <p>{{ stock }}</p>
+<p>{{ temp }}</p>
 </body>
 
 
