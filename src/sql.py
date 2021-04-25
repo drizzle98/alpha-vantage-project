@@ -8,6 +8,14 @@ db = mysql.connector.connect(
     passwd = 'wxy110218',
     database = 'stockapp'
     )
+# db = mysql.connector.connect(
+#     host = 'localhost',
+#     user = 'root',
+#     passwd = 'Jzx@1998',
+#     database = 'dsci551'
+#     )
+
+
 
 mycursor = db.cursor()
 
@@ -52,4 +60,3 @@ for file in os.listdir('json'):
     db.commit()
 
 db.close()
-

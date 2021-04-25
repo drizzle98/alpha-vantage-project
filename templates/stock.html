@@ -1,8 +1,11 @@
-<html>
 
+{% extends "layout.html" %}
+{% block content %}
+
+<div>
 
 <head>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <title>{{ title }}</title>
 
@@ -10,11 +13,11 @@
 
 
 <body>
-<p>{{ stockname }}</p>
+<h2>{{ stockname }}</h2>
 <div id="chart" class="chart"></div>
 
-<div class='table'>
-  <h1>Stock Price Table</h1>
+<div class='table';>
+  <h2>Stock Price Table</h2>
     {{tables | safe}}
 </div>
 
@@ -27,4 +30,5 @@
 
     </script>
 
-</html>
+</div>
+{% endblock content %}

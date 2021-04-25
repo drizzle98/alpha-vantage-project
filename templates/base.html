@@ -1,4 +1,7 @@
-<html>
+<!-- <html> -->
+{% extends "layout.html" %}
+{% block content %}
+<div>
 
 
 <head>
@@ -11,8 +14,8 @@
 <form method="POST" action="{{url_for('update')}}">
     <p>Because of the API limit, only one stock can be updated at a time</p>
     <p>Sorry for the inconvenience</p>
-    
-    <select name="_list"> 
+
+    <select name="_list">
         {% for i in _list %}
         <option value = "{{ i }}">{{ i }}</option>
         {% endfor %}
@@ -23,7 +26,7 @@
 </form>
 
 <form method="POST" action='{{url_for('stock')}}'>
-    <select name="stockname"> 
+    <select name="stockname">
             {% for i in stocklist %}
             <option value = "{{ i }}">{{ i }}</option>
             {% endfor %}
@@ -44,7 +47,7 @@
 <br><br><br>
 
 <form method="POST" action='{{url_for('index')}}'>
-    <select name="indexname"> 
+    <select name="indexname">
             {% for i in indexlist %}
             <option value = "{{ i }}">{{ i }}</option>
             {% endfor %}
@@ -67,5 +70,6 @@
 <p>{{ temp }}</p>
 </body>
 
-
-</html>
+</div>
+{% endblock content%}
+<!-- </html> -->

@@ -17,6 +17,7 @@ def update_stock(equity):
     data,meta_data = ts.get_intraday(symbol = equity, interval = '1min', outputsize='full')
     rename = {'1. open':'Open','2. high':'High','3. low':'Low','4. close':'Close','5. volume':'Volume'}
     output = data.rename(columns=rename)
+    #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
     engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
     # Enter your personal mysql username and password
     #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
@@ -33,6 +34,7 @@ def update_index(index):
     output2 = output[['Open','High','Low','Close']]
     # Get the attributes we need
     engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+    #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
     # Enter your personal mysql username and password
     #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
     con = engine.connect()

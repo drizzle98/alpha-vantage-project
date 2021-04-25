@@ -1,6 +1,6 @@
 import pandas as pd
 import requests
-import plotly 
+import plotly
 from plotly.offline import init_notebook_mode, iplot
 import plotly.graph_objs as go
 import datetime
@@ -8,26 +8,45 @@ import json
 
 def trace_plot(df):
     # init_notebook_mode()
-    trace = go.Candlestick(x=df.index,
-                       open=df.Open,
-                       high=df.High,
-                       low=df.Low,
-                       close=df.Close,
+    # trace = go.Candlestick(x=df.index,
+    #                    open=df.Open,
+    #                    high=df.High,
+    #                    low=df.Low,
+    #                    close=df.Close,
+    #                    name = 'Candlestick')
+    # trace_close = go.Scatter(x=list(df.index),
+    #                      y=list(df.Close),
+    #                      name='Close',line=dict(color='#71adf5'))
+    # trace_high = go.Scatter(x=list(df.index),
+    #                     y=list(df.High),
+    #                     visible = False,
+    #                     name='High',
+    #                     line=dict(color='#f2c270'))
+    # trace_low = go.Scatter(x=list(df.index),
+    #                    y=list(df.Low),
+    #                    visible = False,
+    #                    name='Low',
+    #                    line=dict(color='#f28170'))
+    trace = go.Candlestick(x=df.date,
+                       open=df.open,
+                       high=df.high,
+                       low=df.low,
+                       close=df.close,
                        name = 'Candlestick')
-    trace_close = go.Scatter(x=list(df.index),
-                         y=list(df.Close),
+    trace_close = go.Scatter(x=list(df.date),
+                         y=list(df.close),
                          name='Close',line=dict(color='#71adf5'))
-    trace_high = go.Scatter(x=list(df.index),
-                        y=list(df.High),
+    trace_high = go.Scatter(x=list(df.date),
+                        y=list(df.high),
                         visible = False,
                         name='High',
                         line=dict(color='#f2c270'))
-    trace_low = go.Scatter(x=list(df.index),
-                       y=list(df.Low),
+    trace_low = go.Scatter(x=list(df.date),
+                       y=list(df.low),
                        visible = False,
                        name='Low',
                        line=dict(color='#f28170'))
-    
+
     data=[trace,trace_close,trace_high,trace_low]
     updatemenus = list([
         dict(type="buttons",
@@ -36,7 +55,7 @@ def trace_plot(df):
              y = 0.99,
              bgcolor = '#a7bdde',
              bordercolor = '#FFFFFF',
-             font = dict( color='#7d8ca3', size=11 ),
+             font = dict(color='white', size=12 ),#'#7d8ca3'
              direction = 'left',
              xanchor = 'left',
              yanchor = 'top',
@@ -48,10 +67,14 @@ def trace_plot(df):
                  dict(label = 'Close-High-Low',
                      method = 'update',
                      args = [{'visible': [False, True, True, True]},
-                             {'title': f'Close, High,and Low price of this ticker {df.name}'}
+                             {'title': f'Close, High,and Low price of this ticker {df.name}'},
+                 dict(label = 'Line',
+                     method = 'update',
+                     args = [{'visible': [True, True, True, True]},
+                             {'title': f'Line of this ticker {df.name}'}])
                             ])
              ]))])
-     # define the data and layout, and store them in the fig dictionary                        
+     # define the data and layout, and store them in the fig dictionary
     layout=go.Layout(title=f"{df.name}",autosize=True,updatemenus=updatemenus,
                      plot_bgcolor = '#ffe5e8')
     #I had to use offline.iplot in order to show this graph in notebook

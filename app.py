@@ -26,7 +26,7 @@ def base():
 
 @app.route('/update', methods=['POST'])
 def update():
-    # This part is for the streaming. One stock can be updated at a time due to the API limit. 
+    # This part is for the streaming. One stock can be updated at a time due to the API limit.
     if request.method == 'POST':
         stockname = request.form.get('_list')
         if stockname in stocklist:
@@ -60,7 +60,9 @@ def stock():
         # Select all for the situation that none of them were checked.
 
         query = f"Select {qry} from {stock_name}"
+        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
         con = engine.connect()
@@ -97,6 +99,8 @@ def index():
         # Select all for the situation that none of them were checked.
 
         query = f"Select {qry} from {index_new}"
+        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
