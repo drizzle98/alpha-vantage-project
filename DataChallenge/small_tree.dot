@@ -1,0 +1,25 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label="price <= 25.3\nmse = 1327330058.4\nsamples = 12404\nvalue = 26134.6"] ;
+1 [label="price <= 2.1\nmse = 667717013.0\nsamples = 12402\nvalue = 25795.7"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="price <= 0.1\nmse = 181610207.5\nsamples = 12234\nvalue = 23555.0"] ;
+1 -> 2 ;
+3 [label="mse = 38664672.9\nsamples = 9599\nvalue = 18081.6"] ;
+2 -> 3 ;
+4 [label="mse = 200577805.9\nsamples = 2635\nvalue = 43234.1"] ;
+2 -> 4 ;
+5 [label="price <= 6.2\nmse = 9240721310.1\nsamples = 168\nvalue = 187480.9"] ;
+1 -> 5 ;
+6 [label="mse = 1237472463.4\nsamples = 138\nvalue = 149636.1"] ;
+5 -> 6 ;
+7 [label="mse = 9133938295.2\nsamples = 30\nvalue = 361724.6"] ;
+5 -> 7 ;
+8 [label="seller_city_LosAngeles <= 0.8\nmse = 465117187500.0\nsamples = 2\nvalue = 1693750.0"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="mse = 0.0\nsamples = 1\nvalue = 2875000.0"] ;
+8 -> 9 ;
+10 [label="mse = 0.0\nsamples = 1\nvalue = 1300000.0"] ;
+8 -> 10 ;
+}
