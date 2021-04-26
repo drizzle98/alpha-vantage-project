@@ -91,8 +91,8 @@ def stock():
         g_query = graph_query + subquery
 
 
-        engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
 
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
@@ -147,8 +147,8 @@ def index():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-        engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
         con = engine.connect()
