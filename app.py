@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session,flash
+from flask_wtf import FlaskForm
+from wtforms.fields.html5 import DateField
+from wtforms import validators, SubmitField, ValidationError
+# from flask_bootstrap import Bootstrap
 import pandas as pd
 from sqlalchemy import create_engine
-import os
 from plot import trace_plot
 from update_stock import update_stock, update_index
 import pandas as pd
-
+from datetime import date, datetime
 
 # import MySQL configuration
 
@@ -13,15 +16,25 @@ stocklist = ['MRNA', 'XOM', 'FPRX', 'FB', 'NFLX', 'MSFT', 'QS', 'TSLA', 'AAPL', 
 indexlist = ['S&P GSCI','S&P 500','NASDX']
 
 app = Flask(__name__)
+app.config['SECRET_KEY']='alpha_vantage'
 
-# mysql = MySQL(app)
-@app.route('/')
+class InfoForm(FlaskForm):
+    startdate = DateField('Start Date', format = '%Y-%m-%d',validators=(validators.Optional(),))
+    enddate = DateField('End Date', format = '%Y-%m-%d',default=date.today(),validators=(validators.Optional(),))
+    # def validate_startdate(form, field):
+    #     print(form.startdate.data)
+    #     print(form.enddate.data)
+    #     if field.data > form.enddate.data:
+    #         raise ValidationError('startdate must be earliere than enddate.')
 
+
+@app.route('/',methods=['GET', 'POST'])
 def base():
     _list = ['MRNA', 'XOM', 'FPRX',  'FB', 'NFLX', 'MSFT', 'QS', 'TSLA', 'AAPL', 'AMZN', 'VUZI', 'HD', 'BABA', 'SQ', 'ZM', 'RIOT', 'GOOGL', 'NIO', 'NVDA', 'BA','S&P GSCI','S&P 500','NASDX']
     title = 'stockapp'
-
-    return render_template('base.html',title=title,stocklist=stocklist,indexlist=indexlist,_list=_list)
+    form = InfoForm()
+    form2 = InfoForm()
+    return render_template('base.html',title=title,stocklist=stocklist,indexlist=indexlist,_list=_list, form=form, form2=form2)
 
 
 @app.route('/update', methods=['POST'])
@@ -45,12 +58,14 @@ def update():
         return render_template('update.html',alert = 'Fail to update')
 
 
-@app.route('/stock', methods=['POST'])
+@app.route('/stock', methods=['GET','POST'])
 def stock():
     if request.method == 'POST':
         qry= ''
         stock_name = request.form.get('stockname')
         check = request.form.getlist('check')
+        startdate = request.form.get('startdate')
+        enddate = request.form.get('enddate')
         for i in check:
             qry = qry + ',' + i
         if qry == '':
@@ -60,6 +75,16 @@ def stock():
         # Select all for the situation that none of them were checked.
 
         query = f"Select {qry} from {stock_name}"
+        if startdate != '':
+            if startdate > enddate:
+                start_date = enddate
+                end_date = start_date
+            else:
+                start_date = startdate
+                end_date = enddate
+            query = query + f' where date >= "{start_date}" and date <= "{end_date}"'
+
+        
         #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
 
@@ -68,17 +93,16 @@ def stock():
         con = engine.connect()
         # Create mySql connection
         df = pd.read_sql_query(query,con)
-        df2 = pd.read_sql_query(f'select * from {stock_name}',con)
         tables=df.to_html(classes=stock_name)
 
 
-        df2.rename(index=pd.to_datetime)
-        df2.name=f'Price of {stock_name}'
-        plot_json = trace_plot(df2)
+        df.rename(index=pd.to_datetime)
+        df.name=f'Price of {stock_name}'
+        plot_json = trace_plot(df)
 
-        return render_template('stock.html',tables=tables, check=check,stockname=stock_name, plot_json=plot_json)
+        return render_template('stock.html',tables=tables, check=check,stockname=stock_name, plot_json=plot_json, startdate=startdate, enddate=enddate)
     else:
-        return render_template('stock.html',stock = '1')
+        return render_template('stock.html',stockname= 'Invalid')
 
 
 
@@ -90,6 +114,8 @@ def index():
         index_name = request.form.get('indexname')
         index_new = index_name.replace(' ','_').replace('&','')
         check = request.form.getlist('check2')
+        startdate = request.form.get('startdate')
+        enddate = request.form.get('enddate')
         for i in check:
             qry = qry + ',' + i
         if qry == '':
@@ -100,29 +126,30 @@ def index():
 
         query = f"Select {qry} from {index_new}"
         #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-
+        if startdate != '':
+            if startdate > enddate:
+                start_date = enddate
+                end_date = start_date
+            else:
+                start_date = startdate
+                end_date = enddate
+            query = query + f' where date >= "{start_date}" and date <= "{end_date}"'
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
         con = engine.connect()
         # Create mySql connection
         df = pd.read_sql_query(query,con)
-        df2 = pd.read_sql_query(f'select * from {index_new}',con)
         tables=df.to_html(classes=index_new)
 
 
-        df2.rename(index=pd.to_datetime)
-        df2.name=index_name
-        plot_json = trace_plot(df2)
+        df.rename(index=pd.to_datetime)
+        df.name=index_name
+        plot_json = trace_plot(df)
 
         return render_template('stock.html',tables=tables, check=check,index_name=index_name, plot_json=plot_json)
     else:
-        return render_template('stock.html',stock = '1')
-
-
-
-
-
+        return render_template('stock.html',index_name = 'Invalid')
 
 
 if __name__ == '__main__':

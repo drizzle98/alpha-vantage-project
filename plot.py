@@ -7,26 +7,7 @@ import datetime
 import json
 
 def trace_plot(df):
-    # init_notebook_mode()
-    # trace = go.Candlestick(x=df.index,
-    #                    open=df.Open,
-    #                    high=df.High,
-    #                    low=df.Low,
-    #                    close=df.Close,
-    #                    name = 'Candlestick')
-    # trace_close = go.Scatter(x=list(df.index),
-    #                      y=list(df.Close),
-    #                      name='Close',line=dict(color='#71adf5'))
-    # trace_high = go.Scatter(x=list(df.index),
-    #                     y=list(df.High),
-    #                     visible = False,
-    #                     name='High',
-    #                     line=dict(color='#f2c270'))
-    # trace_low = go.Scatter(x=list(df.index),
-    #                    y=list(df.Low),
-    #                    visible = False,
-    #                    name='Low',
-    #                    line=dict(color='#f28170'))
+
     trace = go.Candlestick(x=df.date,
                        open=df.open,
                        high=df.high,

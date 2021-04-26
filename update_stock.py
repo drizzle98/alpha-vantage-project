@@ -14,24 +14,25 @@ api_key = '6H0W9Q4RDDBVU43C'
 
 def update_stock(equity):
     ts = TimeSeries(key = api_key, output_format='pandas')
-    data,meta_data = ts.get_intraday(symbol = equity, interval = '1min', outputsize='full')
-    rename = {'1. open':'Open','2. high':'High','3. low':'Low','4. close':'Close','5. volume':'Volume'}
+    data,meta_data = ts.get_daily_adjusted(symbol = equity, outputsize='full')
+    rename = {'1. open':'open','2. high':'high','3. low':'low','4. close':'close','6. volume':'volume'}
     output = data.rename(columns=rename)
-    #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+    output2 = output[['open','high','low','close','volume']]
+    # Get the attributes we need
     engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+    #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
     # Enter your personal mysql username and password
     #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
-
     con = engine.connect()
-    output.to_sql(equity, con=con, if_exists='replace', index = True)
+    output2.to_sql(equity, con=con, if_exists='replace', index = True)
     con.close()
 
 def update_index(index):
     ts = TimeSeries(key = api_key, output_format='pandas')
     data,meta_data = ts.get_daily_adjusted(symbol = index, outputsize='full')
-    rename = {'1. open':'Open','2. high':'High','3. low':'Low','4. close':'Close'}
+    rename = {'1. open':'open','2. high':'high','3. low':'low','4. close':'close'}
     output = data.rename(columns=rename)
-    output2 = output[['Open','High','Low','Close']]
+    output2 = output[['open','high','low','close']]
     # Get the attributes we need
     engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
     #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
