@@ -12,6 +12,7 @@
 <body>
 
 <form method="POST" action="{{url_for('update')}}">
+    <h3>Data Updator</h3>
     <p>Because of the API limit, only one stock can be updated at a time</p>
     <p>Sorry for the inconvenience</p>
 
@@ -24,6 +25,7 @@
 
 </form>
 <br><br><br>
+<h3>Stock Price Checker</h3>
 <form method="POST" action='{{url_for('stock')}}'>
     <select name="stockname">
             {% for i in stocklist %}
@@ -48,7 +50,7 @@
 </form>
 
 <br><br><br>
-
+<h3>Index Checker</h3>
 <form method="POST" action='{{url_for('index')}}'>
     <select name="indexname">
             {% for i in indexlist %}
