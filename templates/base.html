@@ -73,6 +73,19 @@
     {{form2.enddate(class='datepicker')}} {{form2.hidden_tag()}}
     <input type="submit" value='Confirm' />
 </form>
+<br><br><br>
+<h2>Tickers Comparison Tool</h2>
+<form method="post" action="{{url_for('compare')}}"
+    <div class="compare">
+      {% for i in stocklist %}
+        {{i}}<input type="checkbox" name="compare" value="{{i}}" >
+      {% endfor %}
+    </div>
+    <input type="submit" value='Confirm' />
+
+</form>
+
+
 
 <br><br><br>
 <h3>Database Updator</h3>

@@ -10,6 +10,19 @@ from update_stock import update_stock, update_index
 import pandas as pd
 from datetime import date, datetime
 
+import findspark
+findspark.init()
+# Find spark automatically to avoid further error.import pyspark
+# Comment this if the system can find pyspark automatically.
+import pyspark
+from pyspark.sql import SparkSession
+from pyspark.sql.types import Row
+
+
+
+spark = SparkSession.builder.appName('a').getOrCreate()
+# Create spark session
+
 # import MySQL configuration
 
 stocklist = ['MRNA', 'XOM', 'FPRX', 'FB', 'NFLX', 'MSFT', 'QS', 'TSLA', 'AAPL', 'AMZN', 'VUZI', 'HD', 'BABA', 'SQ', 'ZM', 'RIOT', 'GOOGL', 'NIO', 'NVDA', 'BA']
@@ -166,6 +179,35 @@ def index():
     else:
         return render_template('stock.html',index_name = 'Invalid')
 
+
+@app.route('/compare', methods=['POST'])
+def compare():
+    if request.method == 'POST':
+        tickers = request.form.getlist('compare')
+    
+    ticker1 = tickers[0]
+    ticker2 = tickers[1]
+
+    spark = SparkSession.builder.appName('alpha_vantage').getOrCreate()
+    t1 = spark.read.csv(f'csv/{ticker1}.csv')
+    t2 = spark.read.csv(f'csv/{ticker2}.csv')
+    rdd1 = t1.rdd
+    rdd2 = t2.rdd
+
+    rdd_1 = rdd1.map(lambda x: (x['_c1'],x['_c5']))
+    rdd_2 = rdd2.map(lambda x: (x['_c1'],x['_c5']))
+    temp = rdd_1.join(rdd_2)
+
+    temp2 = temp.map(lambda x: (x[0],x[1][0],x[1][1]))
+# final = spark.sparkContext.parallelize(temp2.collect())
+# df = final.toPandas()
+    sparkDF = temp2.map(lambda x: str(x)).map(lambda w: w.replace('(','').replace(')','').replace("'",'').split(',')).toDF()
+    pd_final = sparkDF.toPandas()
+    rename2 = {'_1':'date','_2':ticker1,'_3':ticker2}
+    pd_final = pd_final.rename(columns=rename2)
+
+    tables=pd_final.to_html(classes='compare')
+    return render_template('compare.html', tables=tables)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0',port=3000)
