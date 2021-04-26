@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect, session,fl
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DateField
 from wtforms import validators, SubmitField, ValidationError
-# from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap
 import pandas as pd
 from sqlalchemy import create_engine
 from plot import trace_plot
@@ -17,6 +17,7 @@ indexlist = ['S&P GSCI','S&P 500','NASDX']
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='alpha_vantage'
+
 
 class InfoForm(FlaskForm):
     startdate = DateField('Start Date', format = '%Y-%m-%d',validators=(validators.Optional(),))
@@ -45,15 +46,15 @@ def update():
         if stockname in stocklist:
             try:
                 update_stock(stockname)
-                return render_template('update.html',alert = 'Update successfully',stockname=stockname)
+                return render_template('update.html',alert = 'Updated successfully',stockname=stockname)
             except:
-                return render_template('update.html',alert = 'Fail to update',stockname=stockname)
+                return render_template('update.html',alert = 'Failed to update',stockname=stockname)
         elif stockname in indexlist:
             try:
                 update_index(stockname)
-                return render_template('update.html',alert = 'Update successfully',stockname=stockname)
+                return render_template('update.html',alert = 'Updated successfully',stockname=stockname)
             except:
-                return render_template('update.html',alert = 'Fail to update',stockname=stockname)
+                return render_template('update.html',alert = 'Failed to update',stockname=stockname)
     else:
         return render_template('update.html',alert = 'Fail to update')
 
@@ -89,9 +90,9 @@ def stock():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-        
-        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+
+        engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
 
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
@@ -109,6 +110,9 @@ def stock():
     else:
         return render_template('stock.html',stockname= 'Invalid')
 
+@app.route('/tickers', methods=['POST','GET'])
+def tickers():
+    return render_template('tickers.html')
 
 
 
@@ -143,8 +147,8 @@ def index():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+        engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
         con = engine.connect()

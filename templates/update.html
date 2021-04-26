@@ -1,3 +1,5 @@
+{%extends 'layout.html'%}
+{% block content %}
 <html>
 
 
@@ -7,10 +9,17 @@
 
 
 <body>
-<p>{{ stockname }}</p>
-<p>{{ alert }}</p>
+<h2>{{ stockname }}</h2>
+<br>
+<h4>{{ alert }}!</h4>
+<br>
+<div class="go_back">
+  <a href="/">Click here to go back to home page to choose Your ticker.</a>
 
+
+</div>
 </body>
 
 
 </html>
+ {% endblock content%}

@@ -1,5 +1,5 @@
 
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% block content %}
 
 <div>
@@ -10,14 +10,17 @@
     <title>{{ title }}</title>
 
 </head>
+<div class="back">
+  <a href="/">Back</a>
 
-
+</div>
+<br>
 <body>
-<h2>{{ stockname }}</h2>
+<h2>{{ stockname }} Historic Stock Price Trend Chart</h2>
 
 <div id="chart" class="chart"></div>
 
-<div class='table';>
+<div class='table'; style='text-align:center;'>
   <h2>Stock Price Table</h2>
     {{tables | safe}}
 </div>

@@ -5,39 +5,50 @@
 
 
 <head>
+  <link rel="stylesheet" href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js">
+    </script>
+    <script src=
+"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js">
+    </script>
+
+    <!-- CDN link used below is compatible with this example -->
+    <link rel="stylesheet" href=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js">
+    </script>
     <title>{{ title }}</title>
 </head>
 
 
-<body>
+<body style='text-align:center;'>
 
-<form method="POST" action="{{url_for('update')}}">
-    <p>Because of the API limit, only one stock can be updated at a time</p>
-    <p>Sorry for the inconvenience</p>
 
-    <select name="_list">
-        {% for i in _list %}
-        <option value = "{{ i }}">{{ i }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value='Update Stock/Index Data' />
-
-</form>
-<br><br><br>
+<h2>Select the Stock Ticker You Are Interested in</h2>
+<br>
 <form method="POST" action='{{url_for('stock')}}'>
-    <select name="stockname">
+    <label for="stockname">Choose a stock:</label>
+    <select name="stockname" class="selectpicker" data-live-search="true" >
             {% for i in stocklist %}
             <option value = "{{ i }}">{{ i }}</option>
             {% endfor %}
     </select>
 
-    <br>
-    Date<input type="checkbox" name="check" value='date'>
-    Open<input type="checkbox" name="check" value="open">
-    High<input type="checkbox" name="check" value="high">
-    Low<input type="checkbox" name="check" value="low">
-    Close<input type="checkbox" name="check" value="close">
-    Volume<input type="checkbox" name="check" value="volume">
+    <br><br>
+    <div class="select-attr">
+      Date<input type="checkbox" name="check" value='date'>
+      Open<input type="checkbox" name="check" value="open">
+      High<input type="checkbox" name="check" value="high">
+      Low<input type="checkbox" name="check" value="low">
+      Close<input type="checkbox" name="check" value="close">
+      Volume<input type="checkbox" name="check" value="volume">
+    </div>
 
     <br>
     {{form.csrf_token }}
@@ -48,26 +59,46 @@
 </form>
 
 <br><br><br>
-
+<h2>Select the Index Ticker You Are Interested in</h2>
+<br>
 <form method="POST" action='{{url_for('index')}}'>
-    <select name="indexname">
+  <label for="indexname">Choose an index:</label>
+    <select name="indexname" class='selectpicker show-tick' data-live-search='true' data-width="auto">
             {% for i in indexlist %}
             <option value = "{{ i }}">{{ i }}</option>
             {% endfor %}
     </select>
-
     <br>
-    Date<input type="checkbox" name="check2" value='date'>
-    Open<input type="checkbox" name="check2" value="open">
-    High<input type="checkbox" name="check2" value="high">
-    Low<input type="checkbox" name="check2" value="low">
-    Close<input type="checkbox" name="check2" value="close">
+    <br>
+    <div class="select-attr">
+      Date<input type="checkbox" name="check2" value='date'>
+      Open<input type="checkbox" name="check2" value="open">
+      High<input type="checkbox" name="check2" value="high">
+      Low<input type="checkbox" name="check2" value="low">
+      Close<input type="checkbox" name="check2" value="close">
+    </div>
+
 
     <br>
     {{form2.csrf_token }}
     {{form2.startdate(class='datepicker' )}} {{form2.hidden_tag()}}
     {{form2.enddate(class='datepicker')}} {{form2.hidden_tag()}}
     <input type="submit" value='confirm' />
+</form>
+
+<br><br><br>
+<h3>Update the Data</h3>
+<form method="POST" action="{{url_for('update')}}">
+    <p>Because of the API limit, only one stock can be updated at a time</p>
+    <p>Sorry for the inconvenience</p>
+    <label for="_list">Choose a ticker:</label>
+    <select name="_list" class='selectpicker show-tick' data-live-search='true' data-width="auto">
+        {% for i in _list %}
+        <option value = "{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value='Update Stock/Index Data' />
+
 </form>
 
 
