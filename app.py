@@ -74,7 +74,8 @@ def stock():
             qry = qry.lstrip(',')
         # Select all for the situation that none of them were checked.
 
-        query = f"Select {qry} from {stock_name}"
+        query1 = f"Select {qry} from {stock_name}"
+        graph_query = f"select * from {stock_name}"
         if startdate != '':
             if startdate > enddate:
                 start_date = enddate
@@ -82,7 +83,11 @@ def stock():
             else:
                 start_date = startdate
                 end_date = enddate
-            query = query + f' where date >= "{start_date}" and date <= "{end_date}"'
+            subquery = f' where date >= "{start_date}" and date <= "{end_date}"'
+        elif startdate == '':
+            subquery = f' where date <= "{enddate}"'
+        query = query1 + subquery
+        g_query = graph_query + subquery
 
         
         #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
@@ -95,12 +100,12 @@ def stock():
         df = pd.read_sql_query(query,con)
         tables=df.to_html(classes=stock_name)
 
+        df_graph = pd.read_sql_query(g_query,con)
+        df_graph.rename(index=pd.to_datetime)
+        df_graph.name=f'Price of {stock_name}'
+        plot_json = trace_plot(df_graph)
 
-        df.rename(index=pd.to_datetime)
-        df.name=f'Price of {stock_name}'
-        plot_json = trace_plot(df)
-
-        return render_template('stock.html',tables=tables, check=check,stockname=stock_name, plot_json=plot_json, startdate=startdate, enddate=enddate)
+        return render_template('stock.html',tables=tables, check=check,stockname=stock_name, plot_json=plot_json)
     else:
         return render_template('stock.html',stockname= 'Invalid')
 
@@ -123,9 +128,8 @@ def index():
         else:
             qry = qry.lstrip(',')
         # Select all for the situation that none of them were checked.
-
-        query = f"Select {qry} from {index_new}"
-        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        query1 = f"Select {qry} from {index_new}"
+        graph_query = f"select * from {index_new}"
         if startdate != '':
             if startdate > enddate:
                 start_date = enddate
@@ -133,7 +137,13 @@ def index():
             else:
                 start_date = startdate
                 end_date = enddate
-            query = query + f' where date >= "{start_date}" and date <= "{end_date}"'
+            subquery = f' where date >= "{start_date}" and date <= "{end_date}"'
+        elif startdate == '':
+            subquery = f' where date <= "{enddate}"'
+        query = query1 + subquery
+        g_query = graph_query + subquery
+
+        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
@@ -143,9 +153,10 @@ def index():
         tables=df.to_html(classes=index_new)
 
 
-        df.rename(index=pd.to_datetime)
-        df.name=index_name
-        plot_json = trace_plot(df)
+        df_graph = pd.read_sql_query(g_query,con)
+        df_graph.rename(index=pd.to_datetime)
+        df_graph.name=f'Price of {index_name}'
+        plot_json = trace_plot(df_graph)
 
         return render_template('stock.html',tables=tables, check=check,index_name=index_name, plot_json=plot_json)
     else:
