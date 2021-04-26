@@ -31,10 +31,10 @@
                     <div class="form-row mb-2">
                         <div class="col-12">
                             <label class="h6 font-weight-normal text-muted" for="exampleInputEmail3">Suggstions?</label>
-                            <input type="email" class="form-control mb-2" placeholder="Type here..." name="email" aria-label="Subscribe form" id="exampleInputEmail3" required>
+                            <input type="text" class="form-control mb-2" placeholder="Type here..." aria-label="Subscribe form" id="feedback3" required>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-tertiary shadow-soft btn-block" data-loading-text="Sending">
+                            <button type="submit" class="btn btn-tertiary shadow-soft btn-block" data-loading-text="Sending" onclick = 'myalert()'>
                                 <span>Submit</span>
                             </button>
                         </div>
@@ -58,6 +58,21 @@
             </div>
         </div>
     </div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+
+function myalert() {
+    if(document.getElementById("feedback3").value) {
+    
+        Swal.fire({
+        icon: 'success',
+        title: 'Thanks for your feedback!',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    }
+}
+</script>
 </footer>
 <style media="screen">
   footer{
@@ -65,5 +80,6 @@
     position: fixed;
     width: 100%;
 }
+
 
 </style>

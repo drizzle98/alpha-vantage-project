@@ -17,8 +17,8 @@
 <body style='text-align:center;'>
 
 
-<br><br><br>
-<h2>Select the Stock Ticker You Are Interested In</h2>
+
+<h2>Stock Ticker Checker</h2>
 <br>
 <form method="POST" action='{{url_for('stock')}}'>
     <label for="stockname">Choose a stock:</label>
@@ -43,11 +43,11 @@
     {{form.startdate(class='datepicker' )}} {{form.hidden_tag()}}
     {{form.enddate(class='datepicker')}} {{form.hidden_tag()}}
 
-    <input type="submit" value='confirm' />
+    <input type="submit" value='Confirm' />
 </form>
 
 <br><br><br>
-<h2>Select the Index Ticker You Are Interested In</h2>
+<h2>Index Ticker Checker</h2>
 <br>
 <form method="POST" action='{{url_for('index')}}'>
   <label for="indexname">Choose an index:</label>
@@ -71,11 +71,11 @@
     {{form2.csrf_token }}
     {{form2.startdate(class='datepicker' )}} {{form2.hidden_tag()}}
     {{form2.enddate(class='datepicker')}} {{form2.hidden_tag()}}
-    <input type="submit" value='confirm' />
+    <input type="submit" value='Confirm' />
 </form>
 
 <br><br><br>
-<h3>Update the Data</h3>
+<h3>Database Updator</h3>
 <form method="POST" action="{{url_for('update')}}">
     <p>Because of the API limit, only one stock can be updated at a time</p>
     <p>Sorry for the inconvenience</p>
