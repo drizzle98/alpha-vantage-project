@@ -16,7 +16,25 @@
 <body>
 
 <h2>Historic Price Chart of  {{ index_name }}</h2>
-<div id="chart" class="chart"></div>
+<div id="chart" class="chart">
+
+  <script type="text/javascript">
+
+      var area_plot = {{ area_json | safe}};
+      Plotly.plot('chart', area_plot, {});
+
+  </script>
+<br><br>
+<br>
+<script type="text/javascript">
+
+    var line_plot = {{ line_json | safe}};
+    Plotly.plot('chart', line_plot, {});
+
+</script>
+
+
+</div>
 
 <div class='tables'; >
   <h2>Comparison table</h2>

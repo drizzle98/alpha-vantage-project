@@ -34,7 +34,7 @@ def trace_plot(df):
             active=99,
              x = 0.05,
              y = 0.99,
-             bgcolor = '#a7bdde',
+             bgcolor = '#a7bdde',#7d8ca3,#a7bdde
              bordercolor = '#FFFFFF',
              font = dict(color='white', size=12 ),#'#7d8ca3'
              direction = 'left',
@@ -63,3 +63,61 @@ def trace_plot(df):
     plot_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     return plot_json
+
+#df is a dataframe(date,stocka,stockb), a is name of stock a, b is name of stock b
+def plot_line_compare(df,a,b):
+    df=df.dropna()
+    ######## fig 1 line Figure
+    fig1 = px.line(df, x="date", y=[f'{a}','{b}'],
+                  hover_data={"date": "|%B %d, %Y"},
+                  )
+    fig1.update_xaxes(
+        rangeslider_visible=True,
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1, label="1m", step="month", stepmode="backward"),
+                dict(count=6, label="6m", step="month", stepmode="backward"),
+                dict(count=1, label="YTD", step="year", stepmode="todate"),
+                dict(count=1, label="1y", step="year", stepmode="backward"),
+                dict(step="all")
+            ])))
+    fig1.update_layout(
+        title={
+            'text': "Two tickers' line comparison graph",
+            'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'})
+    line_json = json.dumps(fig1, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return line_json
+
+
+
+    ########  fig 2, area graph
+def plot_area_compare(df,a,b):
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(
+        x=df['date'], y=df[f'{a}'],
+        hoverinfo='x+y',
+        mode='lines',
+        line=dict(width=0.5, color='rgb(131, 90, 241)'),
+        stackgroup='one' # define stack group
+    ))
+    fig2.add_trace(go.Scatter(
+        x=df['date'], y=df[f'{b}'],
+        hoverinfo='x+y',
+        mode='lines',
+        line=dict(width=0.5, color='rgb(111, 231, 219)'),
+        stackgroup='one'
+    ))
+    fig2.update_layout(
+        title={
+            'text': "Two tickers' area comparison graph",
+            'y':0.9,
+            'x':0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'})
+    area_json = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return area_json
