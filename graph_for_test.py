@@ -6,20 +6,13 @@ import plotly.graph_objects as go
 import json
 
 #read data and join data
-AAPL=pd.read_json(open("json/AAPL.json",'r'))
-AMZN=pd.read_json(open("json/AMZN.json",'r'))
-
-joined=AAPL.merge(AMZN,on='date',how='left').dropna()
-joined['AAPL']=joined['1. open_x']
-joined['AMZN']=joined['1. open_y']
-
-data=joined[['date','AAPL','AMZN']]
+def plot_compare(df,ticker1,ticker2):
 
 #first fig, one graph with two lines
-fig1 = px.line(data, x="date", y=['AAPL','AMZN'],
+    fig1 = px.line(df, x="date", y=[ticker1,ticker2],
               hover_data={"date": "|%B %d, %Y"},
               )
-fig1.update_xaxes(
+    fig1.update_xaxes(
     rangeslider_visible=True,
     rangeselector=dict(
         buttons=list([
@@ -29,41 +22,36 @@ fig1.update_xaxes(
             dict(count=1, label="1y", step="year", stepmode="backward"),
             dict(step="all")
         ])))
-fig1.update_layout(
+    fig1.update_layout(
     title={
         'text': "Two tickers' line comparison graph",
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
         'yanchor': 'top'})
-fig1.show()
+    fig1.show()
 
 
-
-
-
-fig2 = go.Figure()
-fig2.add_trace(go.Scatter(
-    x=data['date'], y=data['AAPL'],
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(
+    x=df['date'], y=df[ticker1],
     hoverinfo='x+y',
     mode='lines',
     line=dict(width=0.5, color='rgb(131, 90, 241)'),
     stackgroup='one' # define stack group
-))
-fig2.add_trace(go.Scatter(
-    x=data['date'], y=data['AMZN'],
+        ))
+    fig2.add_trace(go.Scatter(
+    x=df['date'], y=df[ticker2],
     hoverinfo='x+y',
     mode='lines',
     line=dict(width=0.5, color='rgb(111, 231, 219)'),
     stackgroup='one'
-))
-fig2.update_layout(
+    ))
+    fig2.update_layout(
     title={
         'text': "Two tickers' area comparison graph",
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
         'yanchor': 'top'})
-
-
-fig2.show()
+    fig2.show()

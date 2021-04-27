@@ -28,7 +28,7 @@ def update_stock(equity):
     #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
     con = engine.connect()
     output2.to_sql(equity, con=con, if_exists='replace', index = True)
-    output3.to_csv(f'csv/{equity}.csv')
+    output3.to_csv(f'csv/{equity}.csv',header=False)
     con.close()
 
 def update_index(index):

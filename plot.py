@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import plotly
 from plotly.offline import init_notebook_mode, iplot
+import plotly.express as px
 import plotly.graph_objs as go
 import datetime
 import json
@@ -68,7 +69,7 @@ def trace_plot(df):
 def plot_line_compare(df,a,b):
     df=df.dropna()
     ######## fig 1 line Figure
-    fig1 = px.line(df, x="date", y=[f'{a}','{b}'],
+    fig1 = px.line(df, x="date", y=[a,b],
                   hover_data={"date": "|%B %d, %Y"},
                   )
     fig1.update_xaxes(
@@ -81,6 +82,7 @@ def plot_line_compare(df,a,b):
                 dict(count=1, label="1y", step="year", stepmode="backward"),
                 dict(step="all")
             ])))
+    fig1.update_yaxes(autotypenumbers='convert types')
     fig1.update_layout(
         title={
             'text': "Two tickers' line comparison graph",
@@ -98,19 +100,22 @@ def plot_line_compare(df,a,b):
 def plot_area_compare(df,a,b):
     fig2 = go.Figure()
     fig2.add_trace(go.Scatter(
-        x=df['date'], y=df[f'{a}'],
+        x=df['date'], y=df[a],
         hoverinfo='x+y',
         mode='lines',
         line=dict(width=0.5, color='rgb(131, 90, 241)'),
-        stackgroup='one' # define stack group
+        stackgroup='one', # define stack group
+        name = a
     ))
     fig2.add_trace(go.Scatter(
-        x=df['date'], y=df[f'{b}'],
+        x=df['date'], y=df[b],
         hoverinfo='x+y',
         mode='lines',
         line=dict(width=0.5, color='rgb(111, 231, 219)'),
-        stackgroup='one'
+        stackgroup='one',
+        name = b
     ))
+    fig2.update_yaxes(autotypenumbers='convert types')
     fig2.update_layout(
         title={
             'text': "Two tickers' area comparison graph",

@@ -15,23 +15,25 @@ import json
 # con = engine.connect()
 spark = SparkSession.builder.appName('alpha_vantage').getOrCreate()
 fb = spark.read.csv('csv/FB.csv')
-qs = spark.read.csv('csv/QS.csv')
+sq = spark.read.csv('csv/SQ.csv')
 rdd1 = fb.rdd
-rdd2=qs.rdd
+rdd2= sq.rdd
 
 # print(rdd1.take(2))
 rdd_1 = rdd1.map(lambda x: (x['_c1'],x['_c5']))
 rdd_2 = rdd2.map(lambda x: (x['_c1'],x['_c5']))
+
 temp = rdd_1.join(rdd_2)
 
 temp2 = temp.map(lambda x: (x[0],x[1][0],x[1][1]))
-# final = spark.sparkContext.parallelize(temp2.collect())
-# df = final.toPandas()
+
 sparkDF = temp2.map(lambda x: str(x)).map(lambda w: w.split(',')).toDF()
 pd_final = sparkDF.toPandas()
-rename2 = {'_1':'date','_2':'FB','_3':'QS'}
+rename2 = {'_1':'date','_2':'FB','_3':'SQ'}
 pd_final = pd_final.rename(columns=rename2)
-print(pd_final)
+pd_final.sort_values(by=['date'], inplace=True, ascending=False)
+pd_final.to_csv('compare.csv')
+
 # query='select * from FB'
 # df = pd.read_sql_query(query,con)
 # s_df = spark.createDataFrame(df)

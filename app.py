@@ -197,7 +197,6 @@ def compare():
     rdd_1 = rdd1.map(lambda x: (x['_c1'],x['_c5']))
     rdd_2 = rdd2.map(lambda x: (x['_c1'],x['_c5']))
     temp = rdd_1.join(rdd_2)
-
     temp2 = temp.map(lambda x: (x[0],x[1][0],x[1][1]))
 # final = spark.sparkContext.parallelize(temp2.collect())
 # df = final.toPandas()
@@ -205,12 +204,13 @@ def compare():
     pd_final = sparkDF.toPandas()
     rename2 = {'_1':'date','_2':ticker1,'_3':ticker2}
     pd_final = pd_final.rename(columns=rename2)
-
-    tables=pd_final.to_html(classes='compare')
+    pd_final.sort_values(by=['date'], inplace=True, ascending=False)
+    pd_table = pd_final.reset_index(drop=True) 
+    tables=pd_table.to_html(classes='compare')
     line_json=plot_line_compare(pd_final,ticker1,ticker2)
-    area_area=plot_area_compare(pd_final,ticker1,ticker2)
+    # area_json=plot_area_compare(pd_final,ticker1,ticker2)
 
-    return render_template('compare.html', tables=tables,line_json=line_json,area_json=area_json)
+    return render_template('compare.html', tables=tables,line_json=line_json)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0',port=3000)
