@@ -5,7 +5,7 @@ from wtforms import validators, SubmitField, ValidationError
 from flask_bootstrap import Bootstrap
 import pandas as pd
 from sqlalchemy import create_engine
-from plot import trace_plot
+from plot import trace_plot, plot_line_compare, plot_area_compare
 from update_stock import update_stock, update_index
 import pandas as pd
 from datetime import date, datetime
@@ -104,7 +104,7 @@ def stock():
         g_query = graph_query + subquery
 
 
-        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
 
         # Enter your personal mysql username and password
@@ -160,7 +160,7 @@ def index():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        #engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
         engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
@@ -184,7 +184,7 @@ def index():
 def compare():
     if request.method == 'POST':
         tickers = request.form.getlist('compare')
-    
+
     ticker1 = tickers[0]
     ticker2 = tickers[1]
 
@@ -207,7 +207,10 @@ def compare():
     pd_final = pd_final.rename(columns=rename2)
 
     tables=pd_final.to_html(classes='compare')
-    return render_template('compare.html', tables=tables)
+    line_json=plot_line_compare(pd_final,ticker1,ticker2)
+    area_area=plot_area_compare(pd_final,ticker1,ticker2)
+
+    return render_template('compare.html', tables=tables,line_json=line_json,area_json=area_json)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0',port=3000)
