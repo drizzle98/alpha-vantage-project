@@ -2,18 +2,18 @@ import mysql.connector
 import os
 import json
 
-db = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    passwd = 'wxy110218',
-    database = 'stockapp'
-    )
 # db = mysql.connector.connect(
 #     host = 'localhost',
 #     user = 'root',
-#     passwd = 'Jzx@1998',
-#     database = 'dsci551'
+#     passwd = 'wxy110218',
+#     database = 'stockapp'
 #     )
+db = mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    passwd = 'Jzx@1998',
+    database = 'dsci551'
+    )
 
 
 

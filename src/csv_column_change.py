@@ -1,4 +1,4 @@
-import pandas as pd 
+import pandas as pd
 import os, json
 
 for file in os.listdir('csv'):

@@ -20,7 +20,7 @@
 
 <h2>Stock Ticker Checker</h2>
 <br>
-<form method="POST" action='{{url_for('stock')}}'>
+<form method="POST" action='{{url_for('stock')}}' >
     <label for="stockname">Choose a stock:</label>
     <select name="stockname" class="selectpicker" data-live-search="true" style="text-align:center" >
             {% for i in stocklist %}
@@ -46,7 +46,9 @@
     <input type="submit" value='Confirm' />
 </form>
 
-<br><br><br>
+<br>
+<hr class="rounded">
+<br><br>
 <h2>Index Ticker Checker</h2>
 <br>
 <form method="POST" action='{{url_for('index')}}'>
@@ -73,21 +75,72 @@
     {{form2.enddate(class='datepicker')}} {{form2.hidden_tag()}}
     <input type="submit" value='Confirm' />
 </form>
-<br><br><br>
+<br><br>
+<hr class="rounded">
+
+<style media="screen">
+hr.rounded {
+border-top: 3px solid #bbb;
+border-radius: 5px;
+}
+
+input[type=submit] {
+    padding:5px 15px;
+    background:#ccc;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+</style>
+<br>
+<!-- ticker compare -->
+
 <h2>Tickers Comparison Tool</h2>
-<form method="post" action="{{url_for('compare')}}"
-    <div class="compare">
+<br>
+<form method="post" action="{{url_for('compare')}}" onsubmit="return handleData()">
+   <!-- <div class="compare">
       {% for i in stocklist %}
         {{i}}<input type="checkbox" name="compare" value="{{i}}" >
       {% endfor %}
+    </div>  -->
+    <label >Choose two tickers:</label>
+    <div style="visibility:hidden; color:red; " id="chk_option_error">
+      Please select two.
     </div>
+    <select id='compare' name="compare" class="selectpicker" data-live-search="true" multiple style="text-align:center" data-max-options="2" >
+            {% for i in stocklist %}
+            <option value = "{{ i }}">{{ i }}</option>
+            {% endfor %}
+    </select>
     <input type="submit" value='Confirm' />
+    <script type="text/javascript">
+    function handleData()
+      {
+        let selected=document.getElementById('compare');
+        let len=selected.selectedOptions.length
+        if(len<2)
+        {
+          document.getElementById("chk_option_error").style.visibility = "visible";
+          return false;
+        }
+        else
+        {
+          document.getElementById("chk_option_error").style.visibility = "hidden";
+          return true;
+        }
+
+      }
+    </script>
+
 
 </form>
+<!-- new -->
 
-
-
-<br><br><br>
+<br><br>
+<!-- database update -->
+<hr class="rounded">
+<br><br>
 <h3>Database Updator</h3>
 <form method="POST" action="{{url_for('update')}}">
     <p>Because of the API limit, only one stock can be updated at a time</p>
@@ -101,7 +154,7 @@
     <input type="submit" value='Update Stock/Index Data' />
 
 </form>
-
+<br>
 
 
 <p>{{ stock }}</p>
@@ -113,4 +166,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 </div>
 {% endblock content%}
+
+
+
+
 <!-- </html> -->
