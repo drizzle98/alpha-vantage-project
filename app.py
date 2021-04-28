@@ -11,7 +11,7 @@ import pandas as pd
 from datetime import date, datetime
 
 import findspark
-#findspark.init()
+findspark.init()
 # Find spark automatically to avoid further error.import pyspark
 # Comment this if the system can find pyspark automatically.
 import pyspark
@@ -104,15 +104,15 @@ def stock():
         g_query = graph_query + subquery
 
 
-        engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
 
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
         con = engine.connect()
         # Create mySql connection
         df = pd.read_sql_query(query,con)
-        tables=df.to_html(classes=stock_name)
+        tables=df.to_html(classes='table table-striped tbs',justify='center')
 
         df_graph = pd.read_sql_query(g_query,con)
         df_graph.rename(index=pd.to_datetime)
@@ -160,14 +160,14 @@ def index():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-        engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
         # Enter your personal mysql username and password
         #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
         con = engine.connect()
         # Create mySql connection
         df = pd.read_sql_query(query,con)
-        tables=df.to_html(classes=index_new)
+        tables=df.to_html(classes='table table-striped tbs',justify='center')
 
 
         df_graph = pd.read_sql_query(g_query,con)
@@ -205,12 +205,13 @@ def compare():
     pd_final = sparkDF.toPandas()
     rename2 = {'_1':'date','_2':ticker1,'_3':ticker2}
     pd_final = pd_final.rename(columns=rename2)
-
-    tables=pd_final.to_html(classes='compare')
+    pd_final.sort_values(by=['date'], inplace=True, ascending=False)
+    pd_table = pd_final.reset_index(drop=True) 
+    tables=pd_table.to_html(classes='table table-striped tbs',justify='center')
     line_json=plot_line_compare(pd_final,ticker1,ticker2)
-    area_json=plot_area_compare(pd_final,ticker1,ticker2)
+    # area_json=plot_area_compare(pd_final,ticker1,ticker2)
 
-    return render_template('compare.html', tables=tables,line_json=line_json,area_json=area_json)
+    return render_template('compare.html', tables=tables,line_json=line_json)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0',port=3000)

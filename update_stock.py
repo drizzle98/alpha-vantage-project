@@ -22,8 +22,8 @@ def update_stock(equity):
     output3 = output.reset_index()
     output3 = output3[['date','open','high','low','close','volume']]
     # Get the attributes we need
-    #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
-    engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+    engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+    # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
     # Enter your personal mysql username and password
     #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
     con = engine.connect()
@@ -38,8 +38,8 @@ def update_index(index):
     output = data.rename(columns=rename)
     output2 = output[['open','high','low','close']]
     # Get the attributes we need
-    #engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
-    engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+    engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+    # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
     # Enter your personal mysql username and password
     #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
     con = engine.connect()
