@@ -9,9 +9,14 @@ from sqlalchemy import create_engine
 import json
 # https://github.com/RomelTorres/alpha_vantage
 
-api_key = 'ZHJ3NVHS79RER2KZ'
-# api_key = '##########'
+
+# #################################################################
+# Please modify the parameter of your mysql database
+# #################################################################
+
+api_key = '##########'
 # Enter your api key from alpha_vantage here
+# #################################################################
 
 def update_stock(equity):
     ts = TimeSeries(key = api_key, output_format='pandas')
@@ -22,10 +27,11 @@ def update_stock(equity):
     output3 = output.reset_index()
     output3 = output3[['date','open','high','low','close','volume']]
     # Get the attributes we need
-    engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
-    # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+
     # Enter your personal mysql username and password
-    #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+    # #################################################################
+    engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+    # #################################################################
     con = engine.connect()
     output2.to_sql(equity, con=con, if_exists='replace', index = True)
     output3.to_csv(f'csv/{equity}.csv',header=False)
@@ -38,10 +44,10 @@ def update_index(index):
     output = data.rename(columns=rename)
     output2 = output[['open','high','low','close']]
     # Get the attributes we need
-    engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
-    # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
+    # #################################################################
     # Enter your personal mysql username and password
-    #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+    engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+    # #################################################################
     con = engine.connect()
     output2.to_sql(index.replace(' ','_').replace('&',''), con=con, if_exists='replace', index = True)
     con.close()

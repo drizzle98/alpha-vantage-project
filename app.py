@@ -11,19 +11,21 @@ import pandas as pd
 from datetime import date, datetime
 
 import findspark
-findspark.init()
+# findspark.init()
+
 # Find spark automatically to avoid further error.import pyspark
 # Comment this if the system can find pyspark automatically.
 import pyspark
 from pyspark.sql import SparkSession
 from pyspark.sql.types import Row
 
-
-
-#spark = SparkSession.builder.appName('a').getOrCreate()
-# Create spark session
-
-# import MySQL configuration
+# #################
+# #################
+# #################
+# Please modify mysql engine parameter in function stock and index 
+# #################
+# #################
+# #################
 
 stocklist = ['MRNA', 'XOM', 'FPRX', 'FB', 'NFLX', 'MSFT', 'QS', 'TSLA', 'AAPL', 'AMZN', 'VUZI', 'HD', 'BABA', 'SQ', 'ZM', 'RIOT', 'GOOGL', 'NIO', 'NVDA', 'BA']
 indexlist = ['S&P GSCI','S&P 500','NASDX']
@@ -103,12 +105,10 @@ def stock():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-
-        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
-
         # Enter your personal mysql username and password
-        #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+        # #################################################################
+        engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+        # #################################################################
         con = engine.connect()
         # Create mySql connection
         df = pd.read_sql_query(query,con)
@@ -160,10 +160,12 @@ def index():
         query = query1 + subquery
         g_query = graph_query + subquery
 
-        # engine = create_engine("mysql+mysqlconnector://root:Jzx@1998@localhost/dsci551")
-        engine = create_engine("mysql+mysqlconnector://root:wxy110218@localhost/stockapp")
+
         # Enter your personal mysql username and password
-        #  engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+        # #################################################################
+        engine = create_engine("mysql+mysqlconnector://usrname:pwd@host/database")
+        # #################################################################
+
         con = engine.connect()
         # Create mySql connection
         df = pd.read_sql_query(query,con)
