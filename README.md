@@ -1,12 +1,13 @@
 # alpha-vantage-project
 
+We are aimed to create a simple and practical tool for beginners to check stock. The goal is to find patterns in this time-series financial dataset, and make it easier for our viewers to query and compare stock market data. 
 
-# Modify REQUIRED in several scripts!!!
+### Modify REQUIRED in several scripts!!!
 In app.py,update_stock.py modify the sql_engine configurations and alpha_vantage API keys
 
-# MySQL required in your system!!! And make sure it is active!!!
+### MySQL required in your system!!! And make sure it is active!!!
 
-# Usage
+### Usage
 
 ```bash
 git clone https://github.com/drizzle98/alpha-vantage-project
