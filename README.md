@@ -29,3 +29,7 @@ export FLASK_ENV=development
 ```bash
 flask run
 ```
+Enter the following host into your browser
+```
+http://0.0.0.0:3000/
+```
