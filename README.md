@@ -4,8 +4,8 @@
 
 [![Made withJupyter](https://img.shields.io/badge/Made%20with-Jupyter-orange?style=flat-square&logo=Jupyter)](https://jupyter.org/try) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg?style=flat-square)](https://www.python.org/) ![repo size](https://img.shields.io/github/repo-size/drizzle98/alpha-vantage-project?style=flat-square)
 
-Project report can be seen [here](https://docs.google.com/document/d/12byGNw8N8pKAq2cTdrpOEwOZXUv4-O4eNq42qujbkwc/edit?usp=sharing)
-Project presentation can be seen [here](https://www.youtube.com/watch?v=QO9tYG7o4p0)
+Project report can be seen [here](https://docs.google.com/document/d/12byGNw8N8pKAq2cTdrpOEwOZXUv4-O4eNq42qujbkwc/edit?usp=sharing)  
+Project presentation can be seen [here](https://www.youtube.com/watch?v=QO9tYG7o4p0)    
 We are aimed to create a simple and practical tool for beginners to check stock. The goal is to find patterns in this time-series financial dataset, and make it easier for our viewers to query and compare stock market data. 
 
 ### Modify REQUIRED in several scripts!!!
